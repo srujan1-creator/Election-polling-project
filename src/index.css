@@ -64,3 +64,14 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
+
+.diorama-title {
+  color: white;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 32px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}

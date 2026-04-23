@@ -1,20 +1,26 @@
-import { useState, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Experience } from './components/Experience';
+import { useState } from 'react';
 import { AssistantUI } from './components/AssistantUI';
+import { LoginOverlay } from './components/LoginOverlay';
+import { useAuth } from './context/AuthContext';
+import { AnimatedBackground } from './components/AnimatedBackground';
+import { AIChat } from './components/AIChat';
 
 function App() {
   const [currentStep, setCurrentStep] = useState(1);
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <>
-      <Canvas shadows camera={{ position: [0, 2, 8], fov: 45 }}>
-        <color attach="background" args={['#07090F']} />
-        <Suspense fallback={null}>
-          <Experience currentStep={currentStep} />
-        </Suspense>
-      </Canvas>
-      <AssistantUI currentStep={currentStep} onStepChange={setCurrentStep} />
+      <AnimatedBackground />
+      
+      {!isAuthenticated && <LoginOverlay />}
+      
+      {isAuthenticated && (
+        <>
+          <AssistantUI currentStep={currentStep} onStepChange={setCurrentStep} />
+          <AIChat />
+        </>
+      )}
     </>
   );
 }

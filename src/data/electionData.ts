@@ -54,5 +54,12 @@ export const ELECTION_STEPS: ElectionStep[] = [
       'Final results are officially certified and announced.'
     ],
     position: [-5, 2, 0],
+  },
+  {
+    id: 5,
+    title: 'Interactive Polling Demo',
+    description: 'Experience a simulation of an electronic voting machine. Select a candidate and cast your ballot securely.',
+    details: [],
+    position: [0, 0, 0],
   }
 ];
