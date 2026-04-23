@@ -6,6 +6,11 @@ from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 import os
+import sys
+
+# Ensure backend directory is in the Python path for Docker / Cloud Run deployments
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 import httpx
 
 import models, schemas, auth
