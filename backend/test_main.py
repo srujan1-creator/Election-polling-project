@@ -43,3 +43,31 @@ def test_signup_login_flow():
     )
     assert me_response.status_code == 200
     assert me_response.json().get("email") == test_email
+
+def test_login_failure():
+    response = client.post(
+        "/api/auth/login",
+        data={"username": "wrong@example.com", "password": "wrongpassword"}
+    )
+    assert response.status_code == 401
+
+def test_chat_unauthorized():
+    response = client.post(
+        "/api/chat",
+        json={"message": "Hello"}
+    )
+    assert response.status_code == 401
+
+def test_chat_authorized_mock():
+    # Setup test user
+    client.post("/api/auth/signup", json={"email": "chat@example.com", "password": "pass"})
+    login = client.post("/api/auth/login", data={"username": "chat@example.com", "password": "pass"})
+    token = login.json().get("access_token")
+
+    response = client.post(
+        "/api/chat",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"message": "Test"}
+    )
+    assert response.status_code == 200
+    assert "response" in response.json()

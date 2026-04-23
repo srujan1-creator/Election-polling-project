@@ -1,6 +1,7 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 
-export function AnimatedBackground() {
+export const AnimatedBackground = React.memo(function AnimatedBackground() {
   return (
     <div style={{
         position: 'fixed',
@@ -78,4 +79,4 @@ export function AnimatedBackground() {
       />
     </div>
   );
-}
+});

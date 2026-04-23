@@ -125,6 +125,7 @@ export function AIChat() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask about the election..."
                 disabled={isLoading}
+                aria-label="Chat input message"
               />
               <button type="submit" disabled={!input.trim() || isLoading} className="send-btn" aria-label="Send Message">
                 <Send size={18} />
