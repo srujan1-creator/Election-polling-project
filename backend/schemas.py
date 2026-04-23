@@ -1,8 +1,8 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 class UserCreate(BaseModel):
-    email: str
-    password: str
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=128, description="Password must be strong")
 
 class UserResponse(BaseModel):
     id: int
@@ -15,7 +15,7 @@ class Token(BaseModel):
     token_type: str
 
 class ChatRequest(BaseModel):
-    message: str
+    message: str = Field(..., min_length=1, max_length=500, description="Chat query max 500 chars to prevent DOS")
 
 class ChatResponse(BaseModel):
     response: str
