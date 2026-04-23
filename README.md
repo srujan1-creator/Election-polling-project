@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# Cinematic 2D Election Education Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a high-performance, interactive, and beautifully designed web platform built to educate users on the election process. It combines a premium 2D glass-morphic UI with advanced gamification and real-time AI assistance to create an engaging learning experience.
 
-Currently, two official plugins are available:
+## Core Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Interactive Mock Polling Simulation**: Users experience the entire end-to-end voting process.
+- **Real-Time AI Assistant**: A dedicated AI agent (powered by Gemini 1.5 Flash) provides instant, educational answers to any election-related question.
+- **Gamification**: Visual celebrations and progress tracking encourage learning retention.
+- **Robust Security**: Fully authenticated backend with JWT, bcrypt hashing, and restrictive CORS policies.
+- **Accessibility (a11y) First**: Compliant with WCAG standards, featuring full keyboard navigation and ARIA support.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Frontend
+- **Framework**: React 18 + Vite + TypeScript
+- **Styling**: Vanilla CSS (CSS Variables for tokens) + Framer Motion for cinematic animations
+- **Icons**: Lucide React
 
-## Expanding the ESLint configuration
+### Backend
+- **Framework**: FastAPI (Python)
+- **Database**: SQLite with SQLAlchemy ORM
+- **AI Integration**: Google Generative AI (Gemini) SDK
+- **Security**: OAuth2PasswordBearer, PyJWT, passlib/bcrypt
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Local Development
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Requirements
+- Node.js >= 18
+- Python >= 3.11
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Start the Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Or `venv\Scripts\activate` on Windows
+pip install -r requirements.txt
+uvicorn main:app --reload
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Start the Frontend
+```bash
+npm install
+npm run dev
 ```
+
+## Production Deployment (Google Cloud Run)
+This application includes a hardened `Dockerfile` designed for zero-config deployments to Google Cloud Run. The build process statically compiles the Vite frontend and mounts it alongside the FastAPI ASGI server.
+
+1. Connect your GitHub repository to Cloud Build / Cloud Run.
+2. Select the repository and branch.
+3. Add the `GEMINI_API_KEY` and `SECRET_KEY` into the Cloud Run Environment Variables dashboard.
+4. Deploy!
+
+---
+
+*Built for the Google Prompt Wars Challenge.*

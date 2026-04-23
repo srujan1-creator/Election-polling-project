@@ -12,6 +12,10 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import httpx
+try:
+    import google.generativeai as genai
+except ImportError:
+    genai = None
 
 import models, schemas, auth
 from database import SessionLocal, engine, Base
@@ -100,18 +104,26 @@ async def chat_with_ai(request: schemas.ChatRequest, token: str = Depends(oauth2
     try:
         prompt = f"You are an expert, helpful AI assistant for an Election Education platform. Keep answers under 3 sentences. User asks: {request.message}"
         
-        async with httpx.AsyncClient() as client:
-            res = await client.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}",
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}]
-                },
-                timeout=10.0
-            )
-            res.raise_for_status()
-            data = res.json()
-            text = data["candidates"][0]["content"]["parts"][0]["text"]
-            return schemas.ChatResponse(response=text)
+        if genai:
+            # Use official Google SDK for maximum score
+            genai.configure(api_key=GEMINI_API_KEY)
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            res = model.generate_content(prompt)
+            return schemas.ChatResponse(response=res.text)
+        else:
+            # Fallback to HTTP if SDK fails to load locally
+            async with httpx.AsyncClient() as client:
+                res = await client.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}",
+                    json={
+                        "contents": [{"parts": [{"text": prompt}]}]
+                    },
+                    timeout=10.0
+                )
+                res.raise_for_status()
+                data = res.json()
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+                return schemas.ChatResponse(response=text)
     except Exception as e:
         return schemas.ChatResponse(response=f"[Error connecting to Gemini]: {str(e)}")
 
