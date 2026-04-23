@@ -51,7 +51,7 @@ export function AIChat() {
       const data = await res.json();
       
       setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'ai', text: data.response }]);
-    } catch (err) {
+    } catch {
       setMessages(prev => [...prev, { id: Date.now().toString(), sender: 'ai', text: "Sorry, I'm having trouble connecting to the server right now." }]);
     } finally {
       setIsLoading(false);

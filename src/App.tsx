@@ -7,7 +7,7 @@ import { AIChat } from './components/AIChat';
 
 function App() {
   const [currentStep, setCurrentStep] = useState(1);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <>

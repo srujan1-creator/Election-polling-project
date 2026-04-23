@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class UserCreate(BaseModel):
     email: str
@@ -8,8 +8,7 @@ class UserResponse(BaseModel):
     id: int
     email: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
     access_token: str
